@@ -62,7 +62,7 @@ const pagesCtrl = require('./controllers/pages');
 const authCtrl = require('./controllers/auth');
 const exp = require("constants");
 const vipCtrl = require('./controllers/vip');
-
+const listingCtrl = require('./controllers/listings.controller')
 
 //-----------------------------------------------------
 
@@ -81,6 +81,21 @@ app.post("/auth/sign-in", authCtrl.signIn);
 app.get('/auth/sign-out', authCtrl.signOut);
 
 app.get("/vip-lounge", isSignedIn, vipCtrl.welcome);
+
+app.use(isSignedIn)// must be signed in to see the below route
+
+//index view
+app.get('/listings', listingCtrl.index)
+
+app.get('/listings/new', listingCtrl.newListing)
+
+// app.post('/listings', listingCtrl.createListing)
+// this below is better way to pass the user id
+app.post('/listings/:userId', listingCtrl.createListing)
+
+app.get('/listings/:listingId', listingCtrl.show)
+
+app.delete('/listings/:userId/:listingId', listingCtrl.deleteListing)
 
 //-----------------------------------------------------
 app.listen(port, () => {
