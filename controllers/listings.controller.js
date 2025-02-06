@@ -49,6 +49,7 @@ const show = async (req, res) => {
             title: 'Listing',
             listing,
         })
+        
         console.log(listing);
     } catch (error) {
         console.log(error);
