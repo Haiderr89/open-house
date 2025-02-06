@@ -46,9 +46,10 @@ const show = async (req, res) => {
         console.log("show: ", req.params.listingId);
         const listing = await Listing.findById(req.params.listingId).populate('owner')
         res.render('listings/show.ejs', {
-            title: 'Listing?',
+            title: 'Listing',
             listing,
         })
+        console.log(listing);
     } catch (error) {
         console.log(error);
         res.redirect('/')
@@ -73,10 +74,43 @@ const deleteListing = async (req, res) => {
     }
 }
 
+const edit = async (req, res) => {
+    try {
+        const listing = await Listing.findById(req.params.listingId).populate('owner')
+        if(listing.owner.equals(req.params.userId)){
+        res.render('listings/edit.ejs', {
+            title: `Edit ${listing.streetAddress}`,
+            listing,
+        })
+    } else {
+        res.send("You don't have permission to do that.")
+    }
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    }
+}
+
+const update = async (req, res) => {
+    try {
+        const listing = await Listing.findByIdAndUpdate(
+            req.params.listingId,
+            req.body,
+            {new: true}
+        )
+        res.redirect(`/listings/${listing._id}`)
+
+    } catch (error) {
+        console.log(error);
+        res.redirect('/');
+    }
+}
 module.exports = {
     index,
     newListing,
     createListing,
     show,
-    deleteListing
+    deleteListing,
+    edit,
+    update,
 }

@@ -97,6 +97,9 @@ app.get('/listings/:listingId', listingCtrl.show)
 
 app.delete('/listings/:userId/:listingId', listingCtrl.deleteListing)
 
+app.get('/listings/:userId/:listingId/edit', listingCtrl.edit)
+
+app.put('/listings/:userId/:listingId', listingCtrl.update)
 //-----------------------------------------------------
 app.listen(port, () => {
     console.log(`The express app is ready on port ${port}!`);
